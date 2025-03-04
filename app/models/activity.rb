@@ -23,8 +23,8 @@ class Activity < ApplicationRecord
   
   ## Direct associations
 
-  # Activity#traveller: returns a row from the users table associated to this activity by the owner_id column
-  belongs_to(:traveller, class_name: "User", foreign_key: "owner_id")
+  # Activity#traveller: returns a row from the users table associated to this activity by the traveller_id column
+  belongs_to(:traveller, class_name: "User", foreign_key: "traveller_id")
 
   # Activity#corresponding_itinerary: returns a row from the itinerary table associated to this activity by the itinerary_id column
   belongs_to(:corresponding_itinerary, class_name: "Itinerary", foreign_key: "itinerary_id")
@@ -34,6 +34,6 @@ class Activity < ApplicationRecord
 
   ## Indirect associations
 
-  # Activity#keen: returns rows from the users table associated to this activity through its bookmarks
+  # Activity#bookmarkers: returns rows from the users table associated to this activity through its bookmarks
   has_many(:bookmarkers, through: :bookmarks, source: :bookmarks)
 end
