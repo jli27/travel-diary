@@ -5,6 +5,8 @@ task({ :sample_data => :environment }) do
     Activity.destroy_all
     Itinerary.destroy_all
     User.destroy_all
+    Like.destroy_all
+    Bookmark.destroy_all
   end
 
   users = [
