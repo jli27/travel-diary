@@ -7,29 +7,27 @@ task({ :sample_data => :environment }) do
     User.destroy_all
   end
 
-  user1 = User.new
-  user1.save
-  user1.username = "Jasmine"
-  user1.avatar_url = "https://static.wixstatic.com/media/f0bb90_f2ffa6cf499d467b87d71315d20f85a8~mv2.jpeg/v1/crop/x_118,y_469,w_748,h_749/fill/w_170,h_170,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/Jasmine.jpeg"
-  user1.itineraries_count = 0
-  user1.itineraries_count = 0
-  user1.bookmarks_count = 0
-  user1.likes_count = 0
-  user1.email = "jasmine@example.com"
-  user1.encrypted_password = "jasmine"
-  user1.save
+  users = [
+    {username: "Jasmine", avatar_url: "https://static.wixstatic.com/media/f0bb90_f2ffa6cf499d467b87d71315d20f85a8~mv2.jpeg/v1/crop/x_118,y_469,w_748,h_749/fill/w_170,h_170,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/Jasmine.jpeg", likes_count: 0, itineraries_count: 0, bookmarks_count: 0, email: "jasmine@example.com"},
+    {username: "Madelyn", avatar_url: "https://lirp.cdn-website.com/d5f03950/dms3rep/multi/opt/Madelyn_senior_photo2-640w.png", likes_count: 0, itineraries_count: 0, bookmarks_count: 0, email: "madelyn@example.com"}
+  ]
+  User.insert_all!(users)
 
-  user2 = User.new
-  user2.avatar_url = "https://lirp.cdn-website.com/d5f03950/dms3rep/multi/opt/Madelyn_senior_photo2-640w.png"
-  user2.itineraries_count = 0
-  user2.itineraries_count = 0
-  user2.bookmarks_count = 0
-  user2.likes_count = 0
-  user2.email = "madelyn@example.com"
-  user2.encrypted_password = "madelyn"
-  user2.save
+  if User.method_defined?(:password) || User.has_attribute?(:password_digest)
+    User.all.each do |user|
+      user.password = user.username
+      user.save
+    end
+    puts "Found a password column. Added passwords."
+  else
+    # puts "No password column found. Didn't add passwords."
+  end
 
   users = User.all
+
+  user1 = users.at(0)
+  user2 = users.at(1)
+
   p "Added #{User.count} Users"
 
   itinerary = Itinerary.new
