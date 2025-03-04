@@ -1,0 +1,101 @@
+<div>
+  <div>
+    <h1>
+      Bookmark #<%= @the_bookmark.id %> details
+    </h1>
+
+    <div>
+      <div>
+        <a href="/bookmarks">
+          Go back
+        </a>
+      </div>
+
+      <div>
+        <a href="/delete_bookmark/<%= @the_bookmark.id %>">
+          Delete bookmark
+        </a>
+      </div>
+    </div>
+
+    <dl>
+      <dt>
+        Bookmarker
+      </dt>
+      <dd>
+        <%= @the_bookmark.bookmarker_id %>
+      </dd>
+
+      <dt>
+        Activity
+      </dt>
+      <dd>
+        <%= @the_bookmark.activity_id %>
+      </dd>
+
+      <dt>
+        Itinerary
+      </dt>
+      <dd>
+        <%= @the_bookmark.itinerary_id %>
+      </dd>
+
+      <dt>
+        Created at
+      </dt>
+      <dd>
+        <%= time_ago_in_words(@the_bookmark.created_at) %> ago
+      </dd>
+
+      <dt>
+        Updated at
+      </dt>
+      <dd>
+        <%= time_ago_in_words(@the_bookmark.updated_at) %> ago
+      </dd>
+    </dl>
+  </div>
+</div>
+
+<hr>
+
+
+<div>
+  <div>
+    <h2>
+      Edit bookmark
+    </h2>
+
+    <form action="/modify_bookmark/<%= @the_bookmark.id %>"  method="post" >
+      <div>
+        <label for="bookmarker_id_box">
+          Bookmarker
+        </label>
+
+        <input type="text" id="bookmarker_id_box" name="query_bookmarker_id" value="<%= @the_bookmark.bookmarker_id %>">
+      </div>
+
+      <div>
+        <label for="activity_id_box">
+          Activity
+        </label>
+
+        <input type="text" id="activity_id_box" name="query_activity_id" value="<%= @the_bookmark.activity_id %>">
+      </div>
+
+      <div>
+        <label for="itinerary_id_box">
+          Itinerary
+        </label>
+
+        <input type="text" id="itinerary_id_box" name="query_itinerary_id" value="<%= @the_bookmark.itinerary_id %>">
+      </div>
+
+      <button>
+        Update bookmark
+      </button>
+    </form>
+  </div>
+</div>
+
+<hr>
