@@ -1,44 +1,20 @@
 <div>
+  <style>
+    h1 {text-align: center;}
+    h3 {text-align: center;}
+    h6 {text-align: center;}
+  </style>
   <div>
+    <div class="image-container"><img src="<%= @the_itinerary.cover_image %>" class="cropped-image" alt="<%= @the_itinerary.name %> Image"></div>
+    <p></p>
+    <% owner_name = User.where({ :id => @the_itinerary.owner_id}).at(0).username %>
+    <i><h3><%= owner_name %>'s Itinerary<h3></i>
     <h1>
-      Itinerary #<%= @the_itinerary.id %> details
+      <%= @the_itinerary.name %>
     </h1>
-
-    <div>
-      <div>
-        <a href="/itineraries">
-          Go back
-        </a>
-      </div>
-
-      <div>
-        <a href="/delete_itinerary/<%= @the_itinerary.id %>">
-          Delete itinerary
-        </a>
-      </div>
-    </div>
-
-    <dl>
-      <dt>
-        Name
-      </dt>
-      <dd>
-        <%= @the_itinerary.name %>
-      </dd>
-
-      <dt>
-        Caption
-      </dt>
-      <dd>
-        <%= @the_itinerary.caption %>
-      </dd>
-
-      <dt>
-        Cover image
-      </dt>
-      <dd>
-        <%= @the_itinerary.cover_image %>
-      </dd>
+    <h6>
+      <%= @the_itinerary.caption %>
+    </h6>
 
       <dt>
         Likes count
@@ -174,3 +150,9 @@
 </div>
 
 <hr>
+
+<div>
+        <a href="/delete_itinerary/<%= @the_itinerary.id %>">
+          Delete itinerary
+        </a>
+</div>
