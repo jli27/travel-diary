@@ -449,6 +449,7 @@ DEPENDENCIES
   bootsnap
   capybara
   carrierwave
+  date
   debug
   dev_toolbar
   devise

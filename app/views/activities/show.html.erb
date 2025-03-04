@@ -1,0 +1,206 @@
+<div>
+  <div>
+    <h1>
+      Activity #<%= @the_activity.id %> details
+    </h1>
+
+    <div>
+      <div>
+        <a href="/activities">
+          Go back
+        </a>
+      </div>
+
+      <div>
+        <a href="/delete_activity/<%= @the_activity.id %>">
+          Delete activity
+        </a>
+      </div>
+    </div>
+
+    <dl>
+      <dt>
+        Name
+      </dt>
+      <dd>
+        <%= @the_activity.name %>
+      </dd>
+
+      <dt>
+        Description
+      </dt>
+      <dd>
+        <%= @the_activity.description %>
+      </dd>
+
+      <dt>
+        Cover image
+      </dt>
+      <dd>
+        <%= @the_activity.cover_image %>
+      </dd>
+
+      <dt>
+        Bookmarks count
+      </dt>
+      <dd>
+        <%= @the_activity.bookmarks_count %>
+      </dd>
+
+      <dt>
+        Location
+      </dt>
+      <dd>
+        <%= @the_activity.location %>
+      </dd>
+
+      <dt>
+        Rating
+      </dt>
+      <dd>
+        <%= @the_activity.rating %>
+      </dd>
+
+      <dt>
+        Itinerary
+      </dt>
+      <dd>
+        <%= @the_activity.itinerary_id %>
+      </dd>
+
+      <dt>
+        Traveller
+      </dt>
+      <dd>
+        <%= @the_activity.traveller_id %>
+      </dd>
+
+      <dt>
+        Date
+      </dt>
+      <dd>
+        <%= @the_activity.date %>
+      </dd>
+
+      <dt>
+        Time
+      </dt>
+      <dd>
+        <%= @the_activity.time %>
+      </dd>
+
+      <dt>
+        Created at
+      </dt>
+      <dd>
+        <%= time_ago_in_words(@the_activity.created_at) %> ago
+      </dd>
+
+      <dt>
+        Updated at
+      </dt>
+      <dd>
+        <%= time_ago_in_words(@the_activity.updated_at) %> ago
+      </dd>
+    </dl>
+  </div>
+</div>
+
+<hr>
+
+
+<div>
+  <div>
+    <h2>
+      Edit activity
+    </h2>
+
+    <form action="/modify_activity/<%= @the_activity.id %>"  method="post" >
+      <div>
+        <label for="name_box">
+          Name
+        </label>
+
+        <input type="text" id="name_box" name="query_name" value="<%= @the_activity.name %>">
+      </div>
+
+      <div>
+        <label for="description_box">
+          Description
+        </label>
+
+        <textarea id="description_box" name="query_description"><%= @the_activity.description %></textarea>
+      </div>
+
+      <div>
+        <label for="cover_image_box">
+          Cover image
+        </label>
+
+        <input type="text" id="cover_image_box" name="query_cover_image" value="<%= @the_activity.cover_image %>">
+      </div>
+
+      <div>
+        <label for="bookmarks_count_box">
+          Bookmarks count
+        </label>
+
+        <input type="text" id="bookmarks_count_box" name="query_bookmarks_count" value="<%= @the_activity.bookmarks_count %>">
+      </div>
+
+      <div>
+        <label for="location_box">
+          Location
+        </label>
+
+        <input type="text" id="location_box" name="query_location" value="<%= @the_activity.location %>">
+      </div>
+
+      <div>
+        <label for="rating_box">
+          Rating
+        </label>
+
+        <input type="text" id="rating_box" name="query_rating" value="<%= @the_activity.rating %>">
+      </div>
+
+      <div>
+        <label for="itinerary_id_box">
+          Itinerary
+        </label>
+
+        <input type="text" id="itinerary_id_box" name="query_itinerary_id" value="<%= @the_activity.itinerary_id %>">
+      </div>
+
+      <div>
+        <label for="traveller_id_box">
+          Traveller
+        </label>
+
+        <input type="text" id="traveller_id_box" name="query_traveller_id" value="<%= @the_activity.traveller_id %>">
+      </div>
+
+      <div>
+        <label for="date_box">
+          Date
+        </label>
+
+        <input type="date" id="date_box" name="query_date" value="<%= @the_activity.date %>">
+      </div>
+
+      <div>
+        <label for="time_box">
+          Time
+        </label>
+
+        <input type="time" id="time_box" name="query_time" value="<%= @the_activity.time %>">
+      </div>
+
+      <button>
+        Update activity
+      </button>
+    </form>
+  </div>
+</div>
+
+<hr>

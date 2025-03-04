@@ -1,0 +1,176 @@
+<div>
+  <div>
+    <h1>
+      Itinerary #<%= @the_itinerary.id %> details
+    </h1>
+
+    <div>
+      <div>
+        <a href="/itineraries">
+          Go back
+        </a>
+      </div>
+
+      <div>
+        <a href="/delete_itinerary/<%= @the_itinerary.id %>">
+          Delete itinerary
+        </a>
+      </div>
+    </div>
+
+    <dl>
+      <dt>
+        Name
+      </dt>
+      <dd>
+        <%= @the_itinerary.name %>
+      </dd>
+
+      <dt>
+        Caption
+      </dt>
+      <dd>
+        <%= @the_itinerary.caption %>
+      </dd>
+
+      <dt>
+        Cover image
+      </dt>
+      <dd>
+        <%= @the_itinerary.cover_image %>
+      </dd>
+
+      <dt>
+        Likes count
+      </dt>
+      <dd>
+        <%= @the_itinerary.likes_count %>
+      </dd>
+
+      <dt>
+        Bookmarks count
+      </dt>
+      <dd>
+        <%= @the_itinerary.bookmarks_count %>
+      </dd>
+
+      <dt>
+        Activities count
+      </dt>
+      <dd>
+        <%= @the_itinerary.activities_count %>
+      </dd>
+
+      <dt>
+        Owner
+      </dt>
+      <dd>
+        <%= @the_itinerary.owner_id %>
+      </dd>
+
+      <dt>
+        Location
+      </dt>
+      <dd>
+        <%= @the_itinerary.location %>
+      </dd>
+
+      <dt>
+        Created at
+      </dt>
+      <dd>
+        <%= time_ago_in_words(@the_itinerary.created_at) %> ago
+      </dd>
+
+      <dt>
+        Updated at
+      </dt>
+      <dd>
+        <%= time_ago_in_words(@the_itinerary.updated_at) %> ago
+      </dd>
+    </dl>
+  </div>
+</div>
+
+<hr>
+
+
+<div>
+  <div>
+    <h2>
+      Edit itinerary
+    </h2>
+
+    <form action="/modify_itinerary/<%= @the_itinerary.id %>"  method="post" >
+      <div>
+        <label for="name_box">
+          Name
+        </label>
+
+        <input type="text" id="name_box" name="query_name" value="<%= @the_itinerary.name %>">
+      </div>
+
+      <div>
+        <label for="caption_box">
+          Caption
+        </label>
+
+        <input type="text" id="caption_box" name="query_caption" value="<%= @the_itinerary.caption %>">
+      </div>
+
+      <div>
+        <label for="cover_image_box">
+          Cover image
+        </label>
+
+        <input type="text" id="cover_image_box" name="query_cover_image" value="<%= @the_itinerary.cover_image %>">
+      </div>
+
+      <div>
+        <label for="likes_count_box">
+          Likes count
+        </label>
+
+        <input type="text" id="likes_count_box" name="query_likes_count" value="<%= @the_itinerary.likes_count %>">
+      </div>
+
+      <div>
+        <label for="bookmarks_count_box">
+          Bookmarks count
+        </label>
+
+        <input type="text" id="bookmarks_count_box" name="query_bookmarks_count" value="<%= @the_itinerary.bookmarks_count %>">
+      </div>
+
+      <div>
+        <label for="activities_count_box">
+          Activities count
+        </label>
+
+        <input type="text" id="activities_count_box" name="query_activities_count" value="<%= @the_itinerary.activities_count %>">
+      </div>
+
+      <div>
+        <label for="owner_id_box">
+          Owner
+        </label>
+
+        <input type="text" id="owner_id_box" name="query_owner_id" value="<%= @the_itinerary.owner_id %>">
+      </div>
+
+      <div>
+        <label for="location_box">
+          Location
+        </label>
+
+        <input type="text" id="location_box" name="query_location" value="<%= @the_itinerary.location %>">
+      </div>
+
+      <button>
+        Update itinerary
+      </button>
+    </form>
+  </div>
+</div>
+
+<hr>
