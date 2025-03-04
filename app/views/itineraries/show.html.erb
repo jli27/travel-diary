@@ -16,33 +16,18 @@
       <%= @the_itinerary.caption %>
     </h6>
 
-      <dt>
-        Likes count
-      </dt>
-      <dd>
-        <%= @the_itinerary.likes_count %>
-      </dd>
+    <p><div class="activity-figures">
+      <figure>
+        <img src="https://cdn-icons-png.flaticon.com/512/58/58746.png" class="image-icon" alt="Likes">
+        <center><figcaption><%= @the_itinerary.likes_count %></figcaption></center>
+      </figure>
 
-      <dt>
-        Bookmarks count
-      </dt>
-      <dd>
-        <%= @the_itinerary.bookmarks_count %>
-      </dd>
-
-      <dt>
-        Activities count
-      </dt>
-      <dd>
-        <%= @the_itinerary.activities_count %>
-      </dd>
-
-      <dt>
-        Owner
-      </dt>
-      <dd>
-        <%= @the_itinerary.owner_id %>
-      </dd>
+      <figure>
+        <img src="https://cdn.creazilla.com/icons/3250939/bookmark-icon-md.png" class="image-icon" alt="Bookmarks">
+        <center><figcaption><%= @the_itinerary.bookmarks_count %></figcaption></center>
+      </figure>
+    </div></p>
+  <hr>
 
       <dt>
         Location
@@ -52,102 +37,110 @@
       </dd>
 
       <dt>
-        Created at
+        Created at: <%= time_ago_in_words(@the_itinerary.created_at) %> ago
       </dt>
-      <dd>
-        <%= time_ago_in_words(@the_itinerary.created_at) %> ago
-      </dd>
-
-      <dt>
-        Updated at
-      </dt>
-      <dd>
-        <%= time_ago_in_words(@the_itinerary.updated_at) %> ago
-      </dd>
-    </dl>
   </div>
 </div>
 
 <hr>
 
+<h3>
+  Activities (<%= @the_itinerary.activities_count %>)
+</h3>
+
+<% act = Activity.where({ :itinerary_id => @the_itinerary.id}) %>
+<% date = nil %>
+
+<% act.order({ :time => :asc }).each do |an_activity| %>
+  <% if date == an_activity.date %>
+  <% else %>
+    <% date = an_activity.date %>
+    <b><center><p><div class="card" style="width: 35rem;">
+      <div class="card-title">
+        <p><i><h5><%= date.strftime("%A") %></h5></i>
+        <h4><%= date.strftime("%B %u, %Y") %></h4></p>
+      </div>
+    </div></p><center></b>
+  <% end %>
+
+  <center><div class="card" style="width: 35rem;">
+    <div class="image-container">
+      <img src="<%= an_activity.cover_image %>" class="card-img-top cropped-image" alt="<%= an_activity.name %> Image">
+    </div>
+    <div class="card-body">
+      <h3 class="card-title"><%= an_activity.description %></h3>
+      <p class="card-text"><%= an_activity.location %></p>
+      <p class="card-text"><%= an_activity.rating %></p>
+        <p><div class="activity-figures">
+          <% an_activity.rating.times do %>
+            <figure>
+            <img src="https://cdn-icons-png.flaticon.com/512/8212/8212616.png" class="image-icon" alt="Stars">
+            </figure>
+          <% end %>
+        </div></p>
+      <div class="card-footer"> <%= an_activity.time.strftime("%k:%M %Z") %> </div>
+    </div>
+  </div></center>
+<% end %>
 
 <div>
-  <div>
-    <h2>
-      Edit itinerary
-    </h2>
+  <!-- Button trigger modal -->
+  <p><center><button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+    Edit itinerary
+  </button></center>
+  </p>
 
-    <form action="/modify_itinerary/<%= @the_itinerary.id %>"  method="post" >
-      <div>
-        <label for="name_box">
-          Name
-        </label>
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Edit itinerary</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form action="/modify_itinerary/<%= @the_itinerary.id %>"  method="post" >
+            <p><div>
+              <label for="name_box">
+                Name
+              </label>
 
-        <input type="text" id="name_box" name="query_name" value="<%= @the_itinerary.name %>">
+              <input type="text" id="name_box" name="query_name" value="<%= @the_itinerary.name %>">
+            </div></</p>
+
+            <p><div>
+              <label for="caption_box">
+                Caption
+              </label>
+
+              <input type="text" id="caption_box" name="query_caption" value="<%= @the_itinerary.caption %>">
+            </div></p>
+
+            <p><div>
+              <label for="cover_image_box">
+                Cover image link
+              </label>
+
+              <input type="text" id="cover_image_box" name="query_cover_image" value="<%= @the_itinerary.cover_image %>">
+            </div></p>
+
+            <p><div>
+              <label for="location_box">
+                Google Maps location link
+              </label>
+
+              <input type="text" id="location_box" name="query_location" value="<%= @the_itinerary.location %>">
+            </div></p>
+
+        </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
       </div>
-
-      <div>
-        <label for="caption_box">
-          Caption
-        </label>
-
-        <input type="text" id="caption_box" name="query_caption" value="<%= @the_itinerary.caption %>">
-      </div>
-
-      <div>
-        <label for="cover_image_box">
-          Cover image
-        </label>
-
-        <input type="text" id="cover_image_box" name="query_cover_image" value="<%= @the_itinerary.cover_image %>">
-      </div>
-
-      <div>
-        <label for="likes_count_box">
-          Likes count
-        </label>
-
-        <input type="text" id="likes_count_box" name="query_likes_count" value="<%= @the_itinerary.likes_count %>">
-      </div>
-
-      <div>
-        <label for="bookmarks_count_box">
-          Bookmarks count
-        </label>
-
-        <input type="text" id="bookmarks_count_box" name="query_bookmarks_count" value="<%= @the_itinerary.bookmarks_count %>">
-      </div>
-
-      <div>
-        <label for="activities_count_box">
-          Activities count
-        </label>
-
-        <input type="text" id="activities_count_box" name="query_activities_count" value="<%= @the_itinerary.activities_count %>">
-      </div>
-
-      <div>
-        <label for="owner_id_box">
-          Owner
-        </label>
-
-        <input type="text" id="owner_id_box" name="query_owner_id" value="<%= @the_itinerary.owner_id %>">
-      </div>
-
-      <div>
-        <label for="location_box">
-          Location
-        </label>
-
-        <input type="text" id="location_box" name="query_location" value="<%= @the_itinerary.location %>">
-      </div>
-
-      <button>
-        Update itinerary
-      </button>
-    </form>
+    </div>
   </div>
-</div>
 
 <hr>
 
