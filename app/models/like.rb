@@ -9,5 +9,19 @@
 #  itinerary_id :integer
 #
 class Like < ApplicationRecord
+  validates(:fan, { :presence => true })
+  validates(:itinerary, { :presence => true })
+  validates(:itinerary_id, { 
+    :uniqueness => { :scope => [:fan_id] }
+  })
+
+  # Association accessor methods to define:
   
+  ## Direct associations
+
+  # Like#fan: returns a row from the users table associated to this like by the fan_id column
+  belongs_to(:fan, class_name: "User", foreign_key: "fan_id")
+
+  # Like#itinerary: returns a row from the itinerary table associated to this like by the itinerary_id column
+  belongs_to(:itinerary, class_name: "Itinerary", foreign_key: "itinerary_id")
 end

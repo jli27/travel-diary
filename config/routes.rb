@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
   root "itineraries#index"
 
+  get("/users/:username", { :controller => "users", :action => "profile" })
+
   # Routes for the Bookmark resource:
 
   # CREATE
@@ -75,6 +77,5 @@ Rails.application.routes.draw do
   #------------------------------
 
   devise_for :users
-
   
 end

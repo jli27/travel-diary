@@ -27,7 +27,7 @@
           </a>
           <ul class="dropdown-menu">
             <% if current_user.present? %>
-              <li><a class="dropdown-item" href="#">View Profile</a></li>
+              <li><a class="dropdown-item" href="/users/<%=current_user.username%>">View Profile</a></li>
               <li><a class="/users/edit" href="#">Edit Profile</a></li>
               <li><hr class="dropdown-divider"></li>
               <li><a class="dropdown-item" href="/users/sign_out">Sign out</a></li>

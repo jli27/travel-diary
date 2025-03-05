@@ -30,3 +30,16 @@
   background-color: lightblue;
   font-weight: bold;
 }
+
+.pfp-image {
+  width: 175px;
+  height: 175px;
+  object-fit: cover;
+  border-radius: 100px;
+  align-items: center;
+}
+
+.image-row {
+  margin-bottom: 10px;
+  text-align: center;
+}

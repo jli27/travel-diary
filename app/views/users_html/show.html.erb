@@ -1,0 +1,49 @@
+<div class ="image-row">
+      <img src="<%= @the_user.avatar_url %>" alt="Profile Picture" class="pfp-image">
+    </div>
+
+<center><h1><%= @the_user.username %></h1></center>
+
+<hr>
+
+<center><p><h2>Itineraries (<%= @the_user.itineraries_count %>)</h2></center></p>
+
+  <% user_iten = Itinerary.where({ :owner_id => @the_user.id}) %>
+  <div class="row row-cols-1 row-cols-md-3 g-4">
+  <div class="col">
+    <% user_iten.each do |an_itinerary| %>
+      <center><div class="card h-75" style="width: 20rem;">
+        <div class="image-container">
+          <img src="<%= an_itinerary.cover_image %>" class="card-img-top cropped-image" alt="<%= an_itinerary.name %> Image">
+        </div>
+        <div class="card-body">
+          <i><h6 class="card-subtitle mb-2 text-body-secondary">
+            <a href="/<%= @the_user.username %>"><%= @the_user.username %></a></h5></i>
+          <h5 class="card-title"><%= an_itinerary.name %></h5>
+          <p class="card-text"><%= an_itinerary.caption %></p>
+          <a href="/itineraries/<%= an_itinerary.id %>" class="btn btn-primary">Check out details</a>
+          
+        </div>
+      </div></center>
+  <% end %>
+  </div>
+  </div>
+
+<hr>
+
+<% if current_user.present? %>
+  <p><dl>
+  <center><dt>
+    Edit user
+  </dt></center>
+  <dd>
+    <form action="/update_user/<%= @the_user.id %>" method="post">
+      <label for="browser_username">Username</label>
+      <input id="browser_username" type="text" name="input_username" value=<%= @the_user.username %>>
+
+      <button>Update user</button>
+    </form>
+  </dd>
+</dl></p>
+<% else %>
+<% end %>
