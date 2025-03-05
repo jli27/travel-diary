@@ -28,6 +28,10 @@ class ItinerariesController < ApplicationController
     the_itinerary.owner_id = params.fetch("query_owner_id")
     the_itinerary.location = params.fetch("query_location")
 
+    user = User.where({ :id => params.fetch("query_owner_id")}).at(0)
+    user.itineraries_count += 1
+    user.save
+
     if the_itinerary.valid?
       the_itinerary.save
       redirect_to("/itineraries", { :notice => "Itinerary created successfully." })
@@ -61,6 +65,10 @@ class ItinerariesController < ApplicationController
     the_id = params.fetch("path_id")
     the_itinerary = Itinerary.where({ :id => the_id }).at(0)
 
+    the_user = User.where({ :id => the_itinerary.owner_id }).at(0)
+    count = the_user.itineraries_count - 1
+    the_user.itineraries_count = count
+    the_user.save
     the_itinerary.destroy
 
     redirect_to("/itineraries", { :notice => "Itinerary deleted successfully."} )

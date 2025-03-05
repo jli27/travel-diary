@@ -3,6 +3,7 @@
     h1 {text-align: center;}
     h3 {text-align: center;}
     h6 {text-align: center;}
+    .img-holder {position: relative;}
   </style>
   <div>
     <div class="image-container"><img src="<%= @the_itinerary.cover_image %>" class="cropped-image" alt="<%= @the_itinerary.name %> Image"></div>
@@ -16,67 +17,13 @@
       <%= @the_itinerary.caption %>
     </h6>
 
-    <p><div class="activity-figures">
-      <figure>
-        <a href="/likes" target="_blank"><img src="https://cdn-icons-png.flaticon.com/512/58/58746.png" class="image-icon" alt="Likes"></a>
-        <center><figcaption><%= @the_itinerary.likes_count %></figcaption></center>
-      </figure>
-
-      <figure>
-        <img src="https://cdn.creazilla.com/icons/3250939/bookmark-icon-md.png" class="image-icon" alt="Bookmarks">
-        <center><figcaption><%= @the_itinerary.bookmarks_count %></figcaption></center>
-      </figure>
-    </div></p>
-
-    <center><dt>
+    <center><p><p style="color:grey">
       Created <%= time_ago_in_words(@the_itinerary.created_at) %> ago
-    </dt></center>
-  <hr>
-</div>
+    </p></p></center>
 
-<h3>
-  Activities (<%= @the_itinerary.activities_count %>)
-</h3>
-
-<% act = Activity.where({ :itinerary_id => @the_itinerary.id}) %>
-<% date_check = nil %>
-
-<% act.order({ :time => :asc }).each do |an_activity| %>
-  <% if date_check == an_activity.date %>
-  <% else %>
-    <% date_check = an_activity.date %>
-    <b><center><p><div class="card" style="width: 35rem;">
-      <div class="card-title">
-        <p><i><h5><%= date_check.strftime("%A") %></h5></i>
-        <h4><%= date_check.strftime("%B %e, %Y") %></h4></p>
-      </div>
-    </div></p><center></b>
-<% end %>
-
-  <center><div class="card" style="width: 35rem;">
-    <div class="image-container">
-      <img src="<%= an_activity.cover_image %>" class="card-img-top cropped-image" alt="<%= an_activity.name %> Image">
-    </div>
-    <div class="card-body">
-      <h3 class="card-title"><%= an_activity.name %></h3>
-      <h6 class="card-title"><%= an_activity.description %></h6>
-      <p class="card-text"><%= an_activity.location %></p>
-      <p class="card-text"><%= an_activity.rating %></p>
-        <p><div class="activity-figures">
-          <% an_activity.rating.times do %>
-            <figure>
-            <img src="https://cdn-icons-png.flaticon.com/512/8212/8212616.png" class="image-icon" alt="Stars">
-            </figure>
-          <% end %>
-        </div></p>
-      <div class="card-footer"> <%= an_activity.time.strftime("%k:%M %Z") %> </div>
-    </div>
-  </div></center>
-<% end %>
-
-<div>
+<% if current_user.present? %>
   <!-- Button trigger modal -->
-  <p><center><button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+  <p><center><button type="button" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#exampleModal">
     Edit itinerary
   </button></center>
   </p>
@@ -117,7 +64,7 @@
 
             <p><div>
               <label for="location_box">
-                Google Maps location link
+                Location
               </label>
 
               <input type="text" id="location_box" name="query_location" value="<%= @the_itinerary.location %>">
@@ -127,16 +74,259 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <a class="btn btn-danger" href="/delete_itinerary/<%= @the_itinerary.id %>" role="button">Delete itinerary</a>
           <button type="button" class="btn btn-primary">Save changes</button>
         </div>
       </div>
     </div>
   </div>
+<% else%>
+<%end%>
 
-<hr>
 
-<div>
-        <a href="/delete_itinerary/<%= @the_itinerary.id %>">
-          Delete itinerary
-        </a>
+    <p><div class="activity-figures">
+      <figure>
+        <a href="/likes" target="_blank"><img src="https://cdn-icons-png.flaticon.com/512/58/58746.png" class="image-icon" alt="Likes"></a>
+        <center><figcaption><%= @the_itinerary.likes_count %></figcaption></center>
+      </figure>
+
+      <figure>
+        <img src="https://cdn.creazilla.com/icons/3250939/bookmark-icon-md.png" class="image-icon" alt="Bookmarks">
+        <center><figcaption><%= @the_itinerary.bookmarks_count %></figcaption></center>
+      </figure>
+    </div></p>
+  <hr>
 </div>
+
+<h3>
+  Activities (<%= @the_itinerary.activities_count %>)
+</h3>
+
+<% if current_user.present? %>
+  <!-- Button trigger modal -->
+  <p><center><button type="button" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#exampleModal2">
+    Add activity
+  </button></center>
+  </p>
+  
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel2" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Add activity</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form action="/insert_activity" method="post">
+          <p><div>
+            <label for="name_box">
+              Name
+            </label>
+
+            <input type="text" id="name_box" name="query_name">
+          </div></p>
+
+          <p><div>
+            <label for="description_box">
+              Description
+            </label>
+
+            <input type="text" id="description_box" name="query_description">
+          </div></p>
+
+          <p><div>
+            <label for="cover_image_box">
+              Link to cover image
+            </label>
+
+            <input type="text" id="cover_image_box" name="query_cover_image">
+          </div></p>
+
+          <div>
+            <input type="hidden" id="likes_id" name="query_likes_count" value=0>
+          </div>
+
+          <div>
+            <input type="hidden" id="bookmarks_id" name="query_bookmarks_count" value=0>
+          </div>
+
+          <div>
+            <input type="hidden" id="activities_id" name="query_activities_count" value=0>
+          </div>
+
+          <div>
+            <input type="hidden" id="itineraries_id" name="query_itinerary_id" value="<%=@the_itinerary.id%>">
+          </div>
+
+          <div>
+            <input type="hidden" id="traveller_id_box" name="query_traveller_id" value="<%=current_user.id%>">
+          </div>
+
+          <p><div>
+            <label for="location_box">
+              Location
+            </label>
+
+            <input type="text" id="location_box" name="query_location">
+          </div></p>
+
+          <p><div>
+            <label for="date_box">
+              Date
+            </label>
+
+            <input type="date" id="date_box" name="query_date">
+          </div></p>
+
+          <p><div>
+            <label for="time_box">
+              Time
+            </label>
+
+            <input type="time" id="time_box" name="query_time">
+          </div></p>
+
+          <p><div>
+            <label for="rating_box">
+              Rating
+            </label>
+
+            <input type="text" id="rating_box" name="query_rating">
+          </div></p>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Create</button>
+        </div>
+        </form>
+      </div>
+    </div>
+  <%else%>
+  <%end%>
+</div>
+
+<% act = Activity.where({ :itinerary_id => @the_itinerary.id}).order({ :date => :asc, :time => :asc }) %>
+<% date_check = nil %>
+
+<% act.each do |an_activity| %>
+  <% if date_check == an_activity.date %>
+  <% else %>
+    <% date_check = an_activity.date %>
+    <b><center><p><div class="card" style="width: 35rem;">
+      <div class="card-title">
+        <p><i><h5><%= date_check.strftime("%A") %></h5></i>
+        <h4><%= date_check.strftime("%B %e, %Y") %></h4></p>
+      </div>
+    </div></p></center></b>
+  <% end %>
+
+  <center><p><div class="card" style="width: 35rem;">
+    <div class="image-container">
+      <img src="<%= an_activity.cover_image %>" class="card-img-top cropped-image" alt="<%= an_activity.name %> Image">
+      <div class="img-holder">
+        <img src="https://cdn.creazilla.com/icons/3250939/bookmark-icon-md.png" alt="bookmark/>
+        <a class="link" href="/add_bookmark/"></a>
+    </div>
+    </div>
+    <div class="card-body">
+      <h3 class="card-title"><%= an_activity.name %></h3>
+      <h6 class="card-title"><%= an_activity.description %></h6>
+      <p class="card-text"><%= an_activity.location %></p>
+        <p><div class="activity-figures">
+          <% an_activity.rating.times do %>
+            <figure>
+            <img src="https://cdn-icons-png.flaticon.com/512/8212/8212616.png" class="image-icon" alt="Stars">
+            </figure>
+          <% end %>
+        </div></p>
+      <div class="card-footer"><%= an_activity.time.strftime("%k:%M %Z")%></div></center>
+      <% if current_user.present? %>
+        <!-- Button trigger modal -->
+        <p><center><p><button type="button" class="btn btn-outline-warning" data-bs-toggle="modal" data-bs-target="#exampleModal3">
+          Edit activity
+        </button>
+        </p></center></p>
+
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal3" tabindex="-1" aria-labelledby="exampleModalLabel3" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Edit activity</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <form action="/modify_activity/<%= an_activity.id %>"  method="post" >
+                  <p><div>
+                    <label for="name_box">
+                      Name
+                    </label>
+
+                    <input type="text" id="name_box" name="query_name" value="<%= an_activity.name %>">
+                  </div></p>
+
+                  <p><div>
+                    <label for="description_box">
+                      Description
+                    </label>
+
+                    <input type="text" id="description_box" name="query_description" value="<%= an_activity.description %>">
+                  </div></p>
+
+                  <p><div>
+                    <label for="cover_image_box">
+                      Link to cover image
+                    </label>
+
+                    <input type="text" id="cover_image_box" name="query_cover_image" value="<%= an_activity.cover_image %>">
+                  </div></p>
+
+                  <p><div>
+                    <label for="location_box">
+                      Location
+                    </label>
+
+                    <input type="text" id="location_box" name="query_location" value="<%= an_activity.location %>">
+                  </div></p>
+
+                  <p><div>
+                    <label for="date_box">
+                      Date
+                    </label>
+
+                    <input type="date" id="date_box" name="query_date" value="<%= an_activity.date %>">
+                  </div></p>
+
+                  <p><div>
+                    <label for="time_box">
+                      Time
+                    </label>
+
+                    <input type="time" id="time_box" name="query_time" value="<%= an_activity.time %>">
+                  </div></p>
+
+                  <p><div>
+                    <label for="rating_box">
+                      Rating
+                    </label>
+
+                    <input type="text" id="rating_box" name="query_rating" value="<%= an_activity.rating %>">
+                  </div></p>
+
+              </form>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <a class="btn btn-danger" href="/delete_activity/<%= an_activity.id %>" role="button">Delete activity</a>
+                <button type="submit" class="btn btn-primary">Save changes</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      <%else%>
+      <%end%>
+    </div>
+  </div></p>
+<% end %>

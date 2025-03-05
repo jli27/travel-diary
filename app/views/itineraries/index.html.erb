@@ -21,6 +21,7 @@
   </button></center>
   </p>
 
+  <% if current_user.present? %>
   <!-- Modal -->
   <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -55,33 +56,48 @@
             <input type="text" id="cover_image_box" name="query_cover_image">
           </div></p>
 
-          <p><div>
-            <label for="owner_id_box">
-              Owner
-            </label>
+          <div>
+            <input type="hidden" id="likes_id" name="query_likes_count" value=0>
+          </div>
 
-            <input type="text" id="owner_id_box" name="query_owner_id">
-          </div></p>
+          <div>
+            <input type="hidden" id="bookmarks_id" name="query_bookmarks_count" value=0>
+          </div>
+
+          <div>
+            <input type="hidden" id="activities_id" name="query_activities_count" value=0>
+          </div>
+
+          <div>
+            <input type="hidden" id="owner_id_box" name="query_owner_id" value="<%=current_user.id%>">
+          </div>
 
           <p><div>
             <label for="location_box">
-              Link to location on Google Maps
+              Location
             </label>
 
             <input type="text" id="location_box" name="query_location">
           </div></p>
 
-          <p><button>
-            Create itinerary
-          </button></p>
-        </form>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Save changes</button>
+          <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Create</button>
         </div>
+        </form>
       </div>
     </div>
+  <%else%>
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-body">
+          <a href="/users/sign_in" class="btn" role="button">Sign in to create</a>
+      </div>
+    </div>
+    </div>
+  <%end%>
   </div>
 
 <% @list_of_itineraries.each do |an_itinerary| %>

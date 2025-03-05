@@ -43,3 +43,9 @@
   margin-bottom: 10px;
   text-align: center;
 }
+
+.img-holder .link {
+    position: absolute;
+    bottom: 10px; /*your button position*/
+    right: 10px; /*your button position*/
+}

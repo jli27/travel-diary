@@ -1,21 +1,4 @@
 class ActivitiesController < ApplicationController
-  def index
-    matching_activities = Activity.all
-
-    @list_of_activities = matching_activities.order({ :created_at => :desc })
-
-    render({ :template => "activities/index" })
-  end
-
-  def show
-    the_id = params.fetch("path_id")
-
-    matching_activities = Activity.where({ :id => the_id })
-
-    @the_activity = matching_activities.at(0)
-
-    render({ :template => "activities/show" })
-  end
 
   def create
     the_activity = Activity.new
@@ -32,10 +15,14 @@ class ActivitiesController < ApplicationController
 
     if the_activity.valid?
       the_activity.save
-      redirect_to("/activities", { :notice => "Activity created successfully." })
+      redirect_to("/itineraries/#{the_activity.itinerary_id}", { :notice => "Activity created successfully." })
     else
-      redirect_to("/activities", { :alert => the_activity.errors.full_messages.to_sentence })
+      redirect_to("/itineraries/#{the_activity.itinerary_id}", { :alert => the_activity.errors.full_messages.to_sentence })
     end
+    
+    the_itin = Itinerary.where({ :id => the_activity.itinerary_id }).at(0)
+    the_itin.activities_count += 1
+    the_itin.save
   end
 
   def update
@@ -55,9 +42,9 @@ class ActivitiesController < ApplicationController
 
     if the_activity.valid?
       the_activity.save
-      redirect_to("/activities/#{the_activity.id}", { :notice => "Activity updated successfully."} )
+      redirect_to("/itineraries/#{the_activity.itinerary_id}", { :notice => "Activity updated successfully."} )
     else
-      redirect_to("/activities/#{the_activity.id}", { :alert => the_activity.errors.full_messages.to_sentence })
+      redirect_to("/itineraries/#{the_activity.itinerary_id}", { :alert => the_activity.errors.full_messages.to_sentence })
     end
   end
 
@@ -65,8 +52,13 @@ class ActivitiesController < ApplicationController
     the_id = params.fetch("path_id")
     the_activity = Activity.where({ :id => the_id }).at(0)
 
+    the_itin = Itinerary.where({ :id => the_activity.itinerary_id }).at(0)
+    count = the_itin.activities_count - 1
+    the_itin.activities_count = count
+    the_itin.save
+
     the_activity.destroy
 
-    redirect_to("/activities", { :notice => "Activity deleted successfully."} )
+    redirect_to("/itineraries/#{the_itin.id}", { :notice => "Activity deleted successfully."} )
   end
 end

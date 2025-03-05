@@ -58,11 +58,24 @@ task({ :sample_data => :environment }) do
   user2.save
   itinerary2.save
 
+  itinerary3 = Itinerary.new
+  itinerary3.id = 5
+  itinerary3.name = "Puerto Rico"
+  itinerary3.caption = "My PR itinerary"
+  itinerary3.cover_image = "https://i.pinimg.com/736x/e0/1e/58/e01e58a63ba8475798e9449c7a9b738a.jpg"
+  itinerary3.likes_count = 0
+  itinerary3.activities_count = 0
+  itinerary3.bookmarks_count = 0
+  itinerary3.owner_id = user1.id
+  user1.itineraries_count += 1
+  user1.save
+  itinerary3.save
+
   p "Added #{Itinerary.count} Itineraries"
   itineraries = Itinerary.all
 
   activity1 = Activity.new
-  activity1.id = 5
+  activity1.id = 6
   activity1.name = "Taberna Sal Grosso"
   activity1.description = "Lunch!"
   activity1.cover_image = "https://images.culinarybackstreets.com/wp-content/uploads/cb_lisbon_tabernasalgrossoupdate_jcc_final_interior.jpg?lossy=1&resize=800%2C533&ssl=1"
@@ -80,7 +93,7 @@ task({ :sample_data => :environment }) do
   activity1.save
 
   activity2 = Activity.new
-  activity2.id = 6
+  activity2.id = 7
   activity2.name = "Mandala Beach Club"
   activity2.description = "Two Friends Party"
   activity2.cover_image = "https://i0.wp.com/discotech.me/wp-content/uploads/2019/05/mandalabanner.jpg?resize=1500%2C630&ssl=1"
@@ -98,12 +111,77 @@ task({ :sample_data => :environment }) do
     itinerary2.save
   activity2.save
 
+  activity3 = Activity.new
+  activity3.id = 8
+  activity3.name = "Vila Rodrigues"
+  activity3.description = "Hotel"
+  activity3.cover_image = "https://cf.bstatic.com/xdata/images/hotel/max1024x768/441321495.jpg?k=0307fe886d5a30eac7768bbcc5370d16325531aae8a3bb6b171f61a61f5d3f71&o=&hp=1"
+  activity3.bookmarks_count = 0
+  activity3.location = "Lisbon"
+  activity3.rating = 5
+  activity3.itinerary_id = itinerary.id
+  activity3.traveller_id = itinerary.owner_id
+  new_date = Date.new(2024,3,17)
+  activity3.date = new_date
+  new_time = Time.parse("15:00")
+  activity3.time = new_time
+  itinerary.activities_count += 1
+  itinerary.save
+  activity3.save
+
+  activity4 = Activity.new
+  activity4.id = 9
+  activity4.name = "Sintra"
+  activity4.description = "Day trip"
+  activity4.cover_image = "https://media-cdn.tripadvisor.com/media/attractions-splice-spp-674x446/0a/92/9c/e1.jpg"
+  activity4.bookmarks_count = 0
+  activity4.location = "Lisbon"
+  activity4.rating = 5
+  activity4.itinerary_id = itinerary.id
+  activity4.traveller_id = itinerary.owner_id
+  new_date = Date.new(2024,3,19)
+  activity4.date = new_date
+  new_time = Time.parse("10:00")
+  activity4.time = new_time
+  itinerary.activities_count += 1
+  itinerary.save
+  activity4.save
+
+  activity5 = Activity.new
+  activity5.id = 10
+  activity5.name = "Bovista Social Club"
+  activity5.description = "Going out"
+  activity5.cover_image = "https://assets.raisin.digital/media/places/bar-restaurant-boavista-social-club-424445.jpg"
+  activity5.bookmarks_count = 0
+  activity5.location = "Lisbon"
+  activity5.rating = 4
+  activity5.itinerary_id = itinerary.id
+  activity5.traveller_id = itinerary.owner_id
+  new_date = Date.new(2024,3,18)
+  activity5.date = new_date
+  new_time = Time.parse("22:00")
+  activity5.time = new_time
+  itinerary.activities_count += 1
+  itinerary.save
+  activity5.save
+
   p "Added #{Activity.count} Activities"
 
   likes = [
     {fan_id: 1, itinerary_id: 4}
   ]
   Like.insert_all!(likes)
+  liked = Like.all
+
+  liked.each do |like|
+    fan = User.where({ :id => like.fan_id }).at(0)
+    fan.likes_count += 1
+    fan.save
+
+    iten = Itinerary.where({ :id => like.itinerary_id }).at(0)
+    iten.likes_count += 1
+    iten.save
+  end
 
   p "Added #{Like.count} Likes"
 
@@ -111,6 +189,19 @@ task({ :sample_data => :environment }) do
     {bookmarker_id: 1, itinerary_id: 4, activity_id: 6}
   ]
   Bookmark.insert_all!(bookmarks)
+  marked = Bookmark.all
+
+  marked.each do |mark|
+    act = Activity.where({ :id => mark.activity_id }).at(0)
+    count = act.bookmarks_count.to_i
+    count += 1
+    act.bookmarks_count = count.to_s
+    act.save
+
+    iten = Itinerary.where({ :id => mark.itinerary_id }).at(0)
+    iten.bookmarks_count += 1
+    iten.save
+  end
 
   p "Added #{Bookmark.count} Bookmarks"
 end

@@ -1,12 +1,10 @@
 Rails.application.routes.draw do
   root "itineraries#index"
 
-  get("/users/:username", { :controller => "users", :action => "profile" })
-
   # Routes for the Bookmark resource:
 
   # CREATE
-  #post("/insert_bookmark", { :controller => "bookmarks", :action => "create" })
+  get("/insert_bookmark/:bookmark", { :controller => "bookmarks", :action => "create" })
           
   # READ
   # get("/bookmarks", { :controller => "bookmarks", :action => "index" })
@@ -42,7 +40,7 @@ Rails.application.routes.draw do
   # Routes for the Activity resource:
 
   # CREATE
-  # post("/insert_activity", { :controller => "activities", :action => "create" })
+  post("/insert_activity", { :controller => "activities", :action => "create" })
           
   # READ
   get("/activities", { :controller => "activities", :action => "index" })
@@ -77,5 +75,7 @@ Rails.application.routes.draw do
   #------------------------------
 
   devise_for :users
+
+  get("/users/:username", { :controller => "users", :action => "profile" })
   
 end

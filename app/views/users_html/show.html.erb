@@ -1,49 +1,117 @@
-<div class ="image-row">
-      <img src="<%= @the_user.avatar_url %>" alt="Profile Picture" class="pfp-image">
-    </div>
+<p><div class ="image-row">
+  <img src="<%= @the_user.avatar_url %>" alt="Profile Picture" class="pfp-image">
+</div></p>
 
 <center><h1><%= @the_user.username %></h1></center>
+
+<p><center><% if current_user.present? %>
+  <p>
+    <i><a class="btn btn-outline-primary" href="/users/edit" role="button">Edit User</a></i>
+  </dd>
+  </p>
+<% else %>
+<% end %></center></p>
 
 <hr>
 
 <center><p><h2>Itineraries (<%= @the_user.itineraries_count %>)</h2></center></p>
 
+<% if current_user.present? %>
+  <!-- Button trigger modal -->
+  <p><center><button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+    Create new itinerary
+  </button></center>
+  </p>
+
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Create new itinerary</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form action="/insert_itinerary" method="post">
+          <p><div>
+            <label for="name_box">
+              Name
+            </label>
+
+            <input type="text" id="name_box" name="query_name">
+          </div></p>
+
+          <p><div>
+            <label for="caption_box">
+              Caption
+            </label>
+
+            <input type="text" id="caption_box" name="query_caption">
+          </div></p>
+
+          <p><div>
+            <label for="cover_image_box">
+              Link to cover image
+            </label>
+
+            <input type="text" id="cover_image_box" name="query_cover_image">
+          </div></p>
+
+          <div>
+            <input type="hidden" id="likes_id" name="query_likes_count" value=0>
+          </div>
+
+          <div>
+            <input type="hidden" id="bookmarks_id" name="query_bookmarks_count" value=0>
+          </div>
+
+          <div>
+            <input type="hidden" id="activities_id" name="query_activities_count" value=0>
+          </div>
+
+          <div>
+            <input type="hidden" id="owner_id_box" name="query_owner_id" value="<%=current_user.id%>">
+          </div>
+
+          <p><div>
+            <label for="location_box">
+              Location
+            </label>
+
+            <input type="text" id="location_box" name="query_location">
+          </div></p>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Create</button>
+        </div>
+        </form>
+      </div>
+    </div>
+  </div>
+<%else%>
+<%end%>
+
   <% user_iten = Itinerary.where({ :owner_id => @the_user.id}) %>
   <div class="row row-cols-1 row-cols-md-3 g-4">
-  <div class="col">
     <% user_iten.each do |an_itinerary| %>
-      <center><div class="card h-75" style="width: 20rem;">
+      <div class="col">
+      <p><center><div class="card h-75" style="width: 20rem;">
         <div class="image-container">
           <img src="<%= an_itinerary.cover_image %>" class="card-img-top cropped-image" alt="<%= an_itinerary.name %> Image">
         </div>
         <div class="card-body">
           <i><h6 class="card-subtitle mb-2 text-body-secondary">
-            <a href="/<%= @the_user.username %>"><%= @the_user.username %></a></h5></i>
+            <a href="/users/<%= @the_user.username %>"><%= @the_user.username %></a></h5></i>
           <h5 class="card-title"><%= an_itinerary.name %></h5>
           <p class="card-text"><%= an_itinerary.caption %></p>
           <a href="/itineraries/<%= an_itinerary.id %>" class="btn btn-primary">Check out details</a>
           
         </div>
-      </div></center>
+      </div></center></p>
+    </div>
   <% end %>
-  </div>
   </div>
 
 <hr>
-
-<% if current_user.present? %>
-  <p><dl>
-  <center><dt>
-    Edit user
-  </dt></center>
-  <dd>
-    <form action="/update_user/<%= @the_user.id %>" method="post">
-      <label for="browser_username">Username</label>
-      <input id="browser_username" type="text" name="input_username" value=<%= @the_user.username %>>
-
-      <button>Update user</button>
-    </form>
-  </dd>
-</dl></p>
-<% else %>
-<% end %>

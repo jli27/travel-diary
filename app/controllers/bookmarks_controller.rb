@@ -19,9 +19,10 @@ class BookmarksController < ApplicationController
 
   def create
     the_bookmark = Bookmark.new
-    the_bookmark.bookmarker_id = params.fetch("query_bookmarker_id")
-    the_bookmark.activity_id = params.fetch("query_activity_id")
-    the_bookmark.itinerary_id = params.fetch("query_itinerary_id")
+    the_bookmark.bookmarker_id = current_user
+    the_bookmark.activity_id = params.fetch("bookmark")
+    act = Activity.where({ :id => params.fetch("bookmark") })
+    the_bookmark.itinerary_id = 
 
     if the_bookmark.valid?
       the_bookmark.save
