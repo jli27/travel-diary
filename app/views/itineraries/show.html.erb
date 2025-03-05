@@ -18,7 +18,7 @@
 
     <p><div class="activity-figures">
       <figure>
-        <img src="https://cdn-icons-png.flaticon.com/512/58/58746.png" class="image-icon" alt="Likes">
+        <a href="/likes" target="_blank"><img src="https://cdn-icons-png.flaticon.com/512/58/58746.png" class="image-icon" alt="Likes"></a>
         <center><figcaption><%= @the_itinerary.likes_count %></figcaption></center>
       </figure>
 
@@ -27,48 +27,39 @@
         <center><figcaption><%= @the_itinerary.bookmarks_count %></figcaption></center>
       </figure>
     </div></p>
+
+    <center><dt>
+      Created <%= time_ago_in_words(@the_itinerary.created_at) %> ago
+    </dt></center>
   <hr>
-
-      <dt>
-        Location
-      </dt>
-      <dd>
-        <%= @the_itinerary.location %>
-      </dd>
-
-      <dt>
-        Created at: <%= time_ago_in_words(@the_itinerary.created_at) %> ago
-      </dt>
-  </div>
 </div>
-
-<hr>
 
 <h3>
   Activities (<%= @the_itinerary.activities_count %>)
 </h3>
 
 <% act = Activity.where({ :itinerary_id => @the_itinerary.id}) %>
-<% date = nil %>
+<% date_check = nil %>
 
 <% act.order({ :time => :asc }).each do |an_activity| %>
-  <% if date == an_activity.date %>
+  <% if date_check == an_activity.date %>
   <% else %>
-    <% date = an_activity.date %>
+    <% date_check = an_activity.date %>
     <b><center><p><div class="card" style="width: 35rem;">
       <div class="card-title">
-        <p><i><h5><%= date.strftime("%A") %></h5></i>
-        <h4><%= date.strftime("%B %u, %Y") %></h4></p>
+        <p><i><h5><%= date_check.strftime("%A") %></h5></i>
+        <h4><%= date_check.strftime("%B %e, %Y") %></h4></p>
       </div>
     </div></p><center></b>
-  <% end %>
+<% end %>
 
   <center><div class="card" style="width: 35rem;">
     <div class="image-container">
       <img src="<%= an_activity.cover_image %>" class="card-img-top cropped-image" alt="<%= an_activity.name %> Image">
     </div>
     <div class="card-body">
-      <h3 class="card-title"><%= an_activity.description %></h3>
+      <h3 class="card-title"><%= an_activity.name %></h3>
+      <h6 class="card-title"><%= an_activity.description %></h6>
       <p class="card-text"><%= an_activity.location %></p>
       <p class="card-text"><%= an_activity.rating %></p>
         <p><div class="activity-figures">
