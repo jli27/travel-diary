@@ -19,14 +19,18 @@ class LikesController < ApplicationController
 
   def create
     the_like = Like.new
-    the_like.fan_id = params.fetch("query_fan_id")
-    the_like.itinerary_id = params.fetch("query_itinerary_id")
+    the_like.fan_id = current_user.id
+    iten = params.fetch("iten")
+    the_like.itinerary_id = iten
+    matching_itinerary = Itinerary.where({ :id => iten }).at(0)
+    matching_itinerary.likes_count += 1
+    matching_itinerary.save
 
     if the_like.valid?
       the_like.save
-      redirect_to("/likes", { :notice => "Like created successfully." })
+      redirect_to("/itineraries/#{iten}", { :notice => "Like created successfully." })
     else
-      redirect_to("/likes", { :alert => the_like.errors.full_messages.to_sentence })
+      redirect_to("/itineraries/#{iten}", { :alert => the_like.errors.full_messages.to_sentence })
     end
   end
 

@@ -27,7 +27,7 @@ Rails.application.routes.draw do
   # READ
   # get("/likes", { :controller => "likes", :action => "index" })
   
-  get("/likes/:path_id", { :controller => "likes", :action => "show" })
+  get("/likes/:iten", { :controller => "likes", :action => "create" })
   
   # UPDATE
   # post("/modify_like/:path_id", { :controller => "likes", :action => "update" })

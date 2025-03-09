@@ -86,7 +86,12 @@
 
     <p><div class="activity-figures">
       <figure>
-        <a href="/likes" target="_blank"><img src="https://cdn-icons-png.flaticon.com/512/58/58746.png" class="image-icon" alt="Likes"></a>
+        <% matching_like = Like.where({ :fan_id => current_user.id }, { :itinerary_id => @the_itinerary.id}).at(0) %>
+        <%if matching_like == nil%>
+          <a href="/likes/<%=@the_itinerary.id%>" target="_blank"><img src="https://cdn-icons-png.flaticon.com/512/58/58746.png" class="image-icon" alt="Likes"></a>
+        <%else%>
+          <img src="https://cdn-icons-png.flaticon.com/512/58/58746.png" class="image-icon" alt="Likes">
+        <%end%>
         <center><figcaption><%= @the_itinerary.likes_count %></figcaption></center>
       </figure>
 
