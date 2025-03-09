@@ -21,7 +21,7 @@
       Created <%= time_ago_in_words(@the_itinerary.created_at) %> ago
     </p></p></center>
 
-<% if current_user.present? %>
+<% if current_user.present? && current_user.id == @the_itinerary.owner_id %>
   <!-- Button trigger modal -->
   <p><center><button type="button" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#exampleModal">
     Edit itinerary
@@ -107,7 +107,7 @@
   Activities (<%= @the_itinerary.activities_count %>)
 </h3>
 
-<% if current_user.present? %>
+<% if current_user.present? && current_user.id == @the_itinerary.owner_id %>
   <!-- Button trigger modal -->
   <p><center><button type="button" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#exampleModal2">
     Add activity
@@ -247,7 +247,7 @@
           <% end %>
         </div></p>
       <div class="card-footer"><%= an_activity.time.strftime("%k:%M %Z")%></div></center>
-      <% if current_user.present? %>
+      <% if current_user.present? && current_user.id == @the_itinerary.owner_id %>
         <!-- Button trigger modal -->
         <p><center><p><button type="button" class="btn btn-outline-warning" data-bs-toggle="modal" data-bs-target="#exampleModal3">
           Edit activity
