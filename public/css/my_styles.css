@@ -49,3 +49,18 @@
     bottom: 10px; /*your button position*/
     right: 10px; /*your button position*/
 }
+
+.btn {
+  position: relative;
+}
+.btn-overlay {
+    position: absolute;
+    padding: 0;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #ffffff;
+    opacity: 0.5;
+    transition: opacity .5s;
+}

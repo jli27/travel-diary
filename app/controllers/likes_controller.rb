@@ -34,27 +34,15 @@ class LikesController < ApplicationController
     end
   end
 
-  def update
-    the_id = params.fetch("path_id")
-    the_like = Like.where({ :id => the_id }).at(0)
-
-    the_like.fan_id = params.fetch("query_fan_id")
-    the_like.itinerary_id = params.fetch("query_itinerary_id")
-
-    if the_like.valid?
-      the_like.save
-      redirect_to("/likes/#{the_like.id}", { :notice => "Like updated successfully."} )
-    else
-      redirect_to("/likes/#{the_like.id}", { :alert => the_like.errors.full_messages.to_sentence })
-    end
-  end
-
   def destroy
-    the_id = params.fetch("path_id")
-    the_like = Like.where({ :id => the_id }).at(0)
+    iten = params.fetch("iten")
+    matching_like = Like.where({ :fan_id => current_user.id }, { :itinerary_id => iten}).at(0)
+    matching_itinerary = Itinerary.where({ :id => iten }).at(0)
+    matching_itinerary.likes_count = matching_itinerary.likes_count - 1
+    matching_itinerary.save
 
-    the_like.destroy
+    matching_like.destroy
 
-    redirect_to("/likes", { :notice => "Like deleted successfully."} )
+    redirect_to("/itineraries/#{iten}", { :notice => "Like deleted successfully."} )
   end
 end

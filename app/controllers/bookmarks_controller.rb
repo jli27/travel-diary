@@ -19,41 +19,42 @@ class BookmarksController < ApplicationController
 
   def create
     the_bookmark = Bookmark.new
-    the_bookmark.bookmarker_id = current_user
-    the_bookmark.activity_id = params.fetch("bookmark")
-    act = Activity.where({ :id => params.fetch("bookmark") })
-    the_bookmark.itinerary_id = 
+    the_bookmark.bookmarker_id = current_user.id
+    the_bookmark.activity_id = params.fetch("act")
+    act = Activity.where({ :id => params.fetch("act") }).at(0)
+    act.bookmarks_count += 1
+    act.save
+    the_bookmark.itinerary_id = act.itinerary_id
 
     if the_bookmark.valid?
       the_bookmark.save
-      redirect_to("/bookmarks", { :notice => "Bookmark created successfully." })
+      redirect_to("/itinerary/#{act.itinerary_id}", { :notice => "Bookmark created successfully." })
     else
-      redirect_to("/bookmarks", { :alert => the_bookmark.errors.full_messages.to_sentence })
-    end
-  end
-
-  def update
-    the_id = params.fetch("path_id")
-    the_bookmark = Bookmark.where({ :id => the_id }).at(0)
-
-    the_bookmark.bookmarker_id = params.fetch("query_bookmarker_id")
-    the_bookmark.activity_id = params.fetch("query_activity_id")
-    the_bookmark.itinerary_id = params.fetch("query_itinerary_id")
-
-    if the_bookmark.valid?
-      the_bookmark.save
-      redirect_to("/bookmarks/#{the_bookmark.id}", { :notice => "Bookmark updated successfully."} )
-    else
-      redirect_to("/bookmarks/#{the_bookmark.id}", { :alert => the_bookmark.errors.full_messages.to_sentence })
+      redirect_to("/itinerary/#{act.itinerary_id}", { :alert => the_bookmark.errors.full_messages.to_sentence })
     end
   end
 
   def destroy
-    the_id = params.fetch("path_id")
-    the_bookmark = Bookmark.where({ :id => the_id }).at(0)
+    iten = params.fetch("iten")
+    matching_like = Like.where({ :fan_id => current_user.id }, { :itinerary_id => iten}).at(0)
+    matching_itinerary = Itinerary.where({ :id => iten }).at(0)
+    matching_itinerary.likes_count = matching_itinerary.likes_count - 1
+    matching_itinerary.save
 
-    the_bookmark.destroy
+    matching_like.destroy
 
-    redirect_to("/bookmarks", { :notice => "Bookmark deleted successfully."} )
+    redirect_to("/itineraries/#{iten}", { :notice => "Like deleted successfully."} )
+  end
+
+  def destroy
+    act = params.fetch("act")
+    matching_bookmark = Bookmark.where({ :traveller_id => current_user.id }, { :activity_id => act}).at(0)
+    matching_act = Activity.where({ :id => matching_bookmark.activity_id }).at(0)
+    matching_act.bookmarks_count = matching_act.bookmarks_countount - 1
+    matching_act.save
+
+    matching_bookmark.destroy
+
+    redirect_to("/itineraries/#{matching_act.itinerary_id}", { :notice => "Bookmark deleted successfully."} )
   end
 end
