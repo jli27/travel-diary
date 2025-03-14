@@ -186,7 +186,7 @@ task({ :sample_data => :environment }) do
   p "Added #{Like.count} Likes"
 
   bookmarks = [
-    {bookmarker_id: 1, itinerary_id: 4, activity_id: 6}
+    {bookmarker_id: 1, itinerary_id: 4, activity_id: 7}
   ]
   Bookmark.insert_all!(bookmarks)
   marked = Bookmark.all

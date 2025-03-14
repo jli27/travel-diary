@@ -10,11 +10,6 @@
 #  itinerary_id  :integer
 #
 class Bookmark < ApplicationRecord
-  validates(:bookmarker, { :presence => true })
-  validates(:activity, { :presence => true })
-  validates(:activity_id, { 
-    :uniqueness => { :scope => [:keen_id] }
-  })
   
   ## Direct associations
 
